@@ -46,7 +46,7 @@ exports.getCart = (req, res, next) => {
   req.user
     .populate('cart.items.productId')
     .then(user => {
-      console.log(user);// will only get the user details from db but if used user.cart.items the product Id will be populated
+      // console.log(user);// will only get the user details from db but if used user.cart.items the product Id will be populated
       const products = user.cart.items;
       res.render('shop/cart', {
         path: '/cart',
@@ -72,8 +72,10 @@ exports.postCart = (req, res, next) => {
 exports.postCartDeleteProduct = (req, res, next) => {
   const prodId = req.body.productId;
   req.user
-    .deleteItemFromCart(prodId)
+    .removeFromCart(prodId)
     .then(result => {
+      console.log(result);
+      console.log('item deleted');
       res.redirect('/cart');
     })
     .catch(err => console.log(err));
